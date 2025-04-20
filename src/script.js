@@ -4,6 +4,9 @@ const container = document.getElementById("container");
 const superContainer = document.getElementById("superContainer");
 const searchInput = document.getElementById("searchInput");
 const resultList = document.getElementById("resultList");
+const homeButton = document.getElementById("homeButton");
+
+homeButton.id = "homeButton";
 
 const results = [
     {
@@ -265,13 +268,13 @@ const results = [
 
 async function getResults() {
     // simulate getting results from rust
-    return results
+    return results;
 }
 
 async function showResults(results) {
     resultList.style.opacity = 0;
     resultList.innerHTML = "";
-    
+
     results.forEach(result => {
         let li = document.createElement("li");
         li.innerHTML = `
@@ -285,25 +288,39 @@ async function showResults(results) {
         `;
         resultList.appendChild(li);
     });
-    
+
     setTimeout(() => {
         resultList.style.opacity = 1;
     }, 500);
 }
 
 async function fadeOut(element, delay) {
-    return new Promise((resolve) => {
+    return new Promise((res) => {
         element.style.opacity = 0;
-        setTimeout(resolve, delay);
+        setTimeout(res, delay);
     });
 }
 
 async function fadeIn(element, delay) {
-    return new Promise((resolve) => {
+    return new Promise((res) => {
         element.style.opacity = 1;
-        setTimeout(resolve, delay);
+        setTimeout(res, delay);
     });
 }
+
+window.addEventListener("load", () => {
+    void superContainer.offsetWidth;
+
+    setTimeout(() => {
+        superContainer.style.opacity = 1;
+    }, 500);
+});
+
+document.addEventListener("keydown", (key) => {
+    if (key.code == "Enter") {
+        searchButton.click();
+    }
+});
 
 searchButton.addEventListener("click", async () => {
     if (searchInput.value == "") {
@@ -330,18 +347,26 @@ searchButton.addEventListener("click", async () => {
     
     await fadeIn(superContainer, 100);
     
-    await new Promise((res) => {
-        setTimeout(() => {
-            searchInput.style.width = "50vw";
-            res();
-        }, 0);
-    });
-    
+    const onTransitionEnd = (e) => {
+        if (e.propertyName === "width") {
+            homeButton.style.opacity = 1;
+            searchInput.removeEventListener("transitionend", onTransitionEnd);
+        }
+    };
+
+    searchInput.addEventListener("transitionend", onTransitionEnd);
+
+    searchInput.style.width = "50vw";
+
     showResults(results);
 });
 
-document.addEventListener("keydown", (key) => {
-    if (key.code == "Enter") {
-        searchButton.click();
-    }
+homeButton.addEventListener("click", async () => {
+    document.body.style.overflow = "hidden";
+    
+    await fadeOut(superContainer, 100);
+    
+    setTimeout(() => {
+        document.location.reload();
+    }, 750);
 });

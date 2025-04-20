@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 * {
-    font-family: "Poppins", "Arial", sans-serif;
+    font-family: "Poppins", system-ui;
 }
 
 html, body {
@@ -25,6 +25,7 @@ body {
 }
 
 #superContainer {
+    opacity: 0;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -32,7 +33,7 @@ body {
     align-items: center;
     margin: 0;
     padding: 0;
-    transition: opacity 0.1s ease;
+    transition: opacity 0.5s ease;
 }
 
 #container {
@@ -94,6 +95,25 @@ body {
     list-style-type: none;
     opacity: 0;
     transition: all 0.5s ease;
+}
+
+#homeButton {
+    background: none;
+    font-size: 1.2em;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    margin-right: 25px;
+    padding: 0;
+    border-radius: 20px;
+    border: none;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.fallback-icon {
+    font-size: 1.2em;
+    display: inline-block;
+    line-height: 1;
 }
 
 .search-result {
