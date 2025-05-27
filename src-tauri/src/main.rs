@@ -16,6 +16,7 @@ fn main() {
         .setup(|app| {
             let window = app.get_webview_window("main").unwrap();
             window.center().unwrap();
+            window.show().unwrap();
             Ok(())
         })
         .run(tauri::generate_context!())
