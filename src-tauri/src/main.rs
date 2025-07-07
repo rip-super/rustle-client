@@ -130,7 +130,13 @@ fn search_websites(query: String) -> Result<Vec<WebsiteEntry>, String> {
         .into_iter()
         .take(50)
         .map(|(_, _, title, url, description)| {
-            let should_truncate = url.to_lowercase().contains("wikipedia");
+            let cleaned_url = if url.starts_with("https://https//") {
+                url.replacen("https://https//", "https://", 1)
+            } else {
+                url.to_string()
+            };
+
+            let should_truncate = cleaned_url.to_lowercase().contains("wikipedia");
             let final_description = if should_truncate {
                 description
                     .split_whitespace()
@@ -144,7 +150,7 @@ fn search_websites(query: String) -> Result<Vec<WebsiteEntry>, String> {
 
             WebsiteEntry {
                 title,
-                url,
+                url: cleaned_url,
                 description: final_description,
             }
         })
